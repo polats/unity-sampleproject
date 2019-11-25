@@ -112,10 +112,15 @@ namespace DemoGame.Scripts.Session
             {
                 if (_client == null)
                 {
-                    // "defaultkey" should be changed when releasing the app
-                    // see https://heroiclabs.com/docs/install-configuration/#socket
-                    _client = new Client("defaultkey", _ipAddress, _port, false);
-                }
+                // "defaultkey" should be changed when releasing the app
+                // see https://heroiclabs.com/docs/install-configuration/#socket
+                #if UNITY_WEBGL && !UNITY_EDITOR
+                        _client = new Client("http", _ipAddress, _port, "defaultkey", UnityWebRequestAdapter.Instance);
+                #else
+                        _client = new Client("http", _ipAddress, _port, "defaultkey");
+                #endif
+
+    }
                 return _client;
             }
         }
@@ -130,7 +135,7 @@ namespace DemoGame.Scripts.Session
                 if (_socket == null)
                 {
                     // Initializing socket
-                    _socket = Client.CreateWebSocket();
+                    _socket = Client.NewSocket();
                 }
                 return _socket;
             }
@@ -343,7 +348,7 @@ namespace DemoGame.Scripts.Session
             }
             catch (ApiResponseException e)
             {
-                if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
+                if (e.StatusCode == (long) System.Net.HttpStatusCode.NotFound)
                 {
                     Debug.Log("Couldn't find DeviceId in database, creating new user; message: " + e);
                     return await CreateAccountAsync();
@@ -389,7 +394,7 @@ namespace DemoGame.Scripts.Session
             {
                 if (_socket != null)
                 {
-                    await _socket.DisconnectAsync();
+                    await _socket.CloseAsync();
                 }
             }
             catch (Exception e)
@@ -625,7 +630,7 @@ namespace DemoGame.Scripts.Session
                 }
                 catch (ApiResponseException e)
                 {
-                    if (e.StatusCode == System.Net.HttpStatusCode.Conflict)
+                    if (e.StatusCode == (long) System.Net.HttpStatusCode.Conflict)
                     {
                         return FacebookResponse.Conflict;
                     }
