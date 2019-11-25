@@ -186,7 +186,7 @@ namespace DemoGame.Scripts.Profile
                 return false;
             }
 
-            IApiFriends friends = await FriendsManager.LoadFriendsAsync(client, session);
+            IApiFriendList friends = await FriendsManager.LoadFriendsAsync(client, session);
             if (friends == null)
             {
                 Debug.Log("Couldn't retrieve friends list");
