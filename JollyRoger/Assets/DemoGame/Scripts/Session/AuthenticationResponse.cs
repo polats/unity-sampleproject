@@ -19,7 +19,7 @@ namespace DemoGame.Scripts.Session
 {
 
     /// <summary>
-    /// Response received after calling <see cref="NakamaSessionManager.AuthenticateDeviceIdAsync"/>.
+    /// Response received after calling <see cref="NakamaSessionManager.AuthenticateDeviceIdAsync"/> and <see cref="NakamaSessionManager.UpdateUserInfoAsync"/>.
     /// </summary>
     public enum AuthenticationResponse
     {
@@ -36,6 +36,12 @@ namespace DemoGame.Scripts.Session
         /// <summary>
         /// Given device id not found on the server. New account created.
         /// </summary>
-        NewAccountCreated
+        NewAccountCreated,
+
+
+        /// <summary>
+        /// User Info properly updated.
+        /// </summary>
+        UserInfoUpdated
     }
 }

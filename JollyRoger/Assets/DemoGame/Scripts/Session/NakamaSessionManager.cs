@@ -494,12 +494,7 @@ namespace DemoGame.Scripts.Session
             try
             {
                 await Client.UpdateAccountAsync(Session, username, null, avatarUrl);
-
-                // Terminate current session and log in using new username
-                PlayerPrefs.SetString("nakama.authToken", "");
-                AuthenticationResponse response = await ConnectAsync();
-
-                return response;
+                return AuthenticationResponse.UserInfoUpdated;
             }
             catch (ApiResponseException e)
             {

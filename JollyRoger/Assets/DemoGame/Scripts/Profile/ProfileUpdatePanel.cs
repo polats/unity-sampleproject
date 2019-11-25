@@ -210,6 +210,12 @@ namespace DemoGame.Scripts.Profile
         private async void Done(Action onDone)
         {
             AuthenticationResponse response = await NakamaSessionManager.Instance.UpdateUserInfoAsync(_usernameText.text, _avatarPath);
+
+            // Terminate current session and log in using new username
+            // PlayerPrefs.SetString("nakama.authToken", "");
+            // AuthenticationResponse response = await NakamaSessionManager.Instance.ConnectAsync();
+
+
             if (response != AuthenticationResponse.Error)
             {
                 onDone?.Invoke();
